@@ -42,6 +42,13 @@ def main [
     return
   }
 
+  # soul preamble — prepended to every context
+  let soul_path = $"($out)/SOUL.md"
+  let has_soul = ($soul_path | path exists)
+  if $has_soul {
+    print $"Soul: ($soul_path)"
+  }
+
   print $"Building cyber context for ($sizes | length) sizes"
   print $"Graph: ($graph)"
   print $"Output: ($out)"
@@ -53,8 +60,12 @@ def main [
 
     print $"--- ($budget)k ---"
 
-    if $needs_subgraphs {
+    if $needs_subgraphs and $has_soul {
+      nu $context_script $graph --subgraphs --budget $budget --soul $soul_path -o $out_file
+    } else if $needs_subgraphs {
       nu $context_script $graph --subgraphs --budget $budget -o $out_file
+    } else if $has_soul {
+      nu $context_script $graph --budget $budget --soul $soul_path -o $out_file
     } else {
       nu $context_script $graph --budget $budget -o $out_file
     }
