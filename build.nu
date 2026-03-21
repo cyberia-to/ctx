@@ -30,7 +30,9 @@ def main [
   }
 
   let out = if $output_dir == "" {
-    $env.CURRENT_FILE | path dirname
+    let default = $"($env.CURRENT_FILE | path dirname)/distribution"
+    mkdir $default
+    $default
   } else {
     $output_dir
   }
@@ -42,8 +44,9 @@ def main [
     return
   }
 
-  # soul preamble — prepended to every context
-  let soul_path = $"($out)/SOUL.md"
+  # soul preamble — lives at repo root, not in distribution/
+  let repo_root = ($env.CURRENT_FILE | path dirname)
+  let soul_path = $"($repo_root)/SOUL.md"
   let has_soul = ($soul_path | path exists)
   if $has_soul {
     print $"Soul: ($soul_path)"
