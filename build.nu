@@ -1,3 +1,8 @@
+# ---
+# tags: context, nushell
+# crystal-type: source
+# crystal-domain: cyber
+# ---
 # build.nu — generate cyber context at all standard sizes
 #
 # Maps to real model context windows:
